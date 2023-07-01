@@ -1,12 +1,12 @@
-    function el(type, attr, value, childFunc, childrenArr) {
+    function el(type, attr, value, childrenArr) {
         // create parent
         this.parent = document.createElement(type)
         document.body.appendChild(parent)
         parent.setAttribute('class', attr.class)
         parent.innerHTML = value
-        let arr = []
+        const arr = []
         // create child
-         childFunc = (type, attr, value, myChildN) => {
+         const childFunc = (type, attr, value, myChildN) => {
              child = document.createElement(type)
              child.setAttribute('class', attr.class)
              child.innerHTML = value
@@ -26,7 +26,7 @@
        console.log(this.parent)
     }
 
-       el('div', {class: 'divElement'}, null, null,
+       el('div', {class: 'divElement'}, null,
         [
             {type: 'p', attr: {class: 'pElement'}, value: ' First /', myChildN: 0},
             {type: 'p', attr: {class: 'pElement'}, value: ' Second /', myChildN: 0},
