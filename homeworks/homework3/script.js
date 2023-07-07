@@ -1,12 +1,27 @@
 const arr = []
+function getMyAtributes(attr, type, element, value) {
+    let allTypes = {
+        div: ['class', 'id'],
+        p:['class', 'id'],
+        span: ['class', 'id'],
+        h2: ['class', 'id'],
+        h3: ['class', 'id'],
+        img: ['class', 'id', 'src'],
+        label: ['class', 'id', 'for', 'value', 'type'],
+        input: ['class', 'id', 'placeholder', 'value', 'type', 'name'],
+    }
+    for(let item in attr) {
+        let findExistingItem = allTypes[type]?.find(correctAttr => item == correctAttr)
+        allTypes[type] && findExistingItem && element.setAttribute(item, attr[item])
+    }
+    element.innerHTML = value
+}
+
 class El {
     constructor(type, attr, value, childrenArr) {
           this.parent = document.createElement(type)
           document.body.appendChild(this.parent)
-          for(let item in attr) {
-              this.parent.setAttribute(item, attr[item])
-          }
-          this.parent.innerHTML = value
+            getMyAtributes(attr, type, this.parent, value)
             childrenArr.forEach((item, index) => {
                     this.draw(item.type, item.attr, item.value, item.myChildN)
             })
@@ -14,18 +29,12 @@ class El {
     }
     draw(type, attr, value, myChildN) {
         let child = document.createElement(type)
-        for(let item in attr) {
-            child.setAttribute(item, attr[item])
-        }
-        child.innerHTML = value
-        if(arr.length >= 1) {
-            arr[0]?.['parent'].appendChild(child)
-            --arr[0]['children']
-        } else {
-            this.parent.appendChild(child)
-        }
-       myChildN && arr.push({parent: child, children: myChildN})
-       arr[0]?.children < 1 && arr.shift()
+        getMyAtributes(attr, type, child, value)
+       arr.length && (arr[0]?.['parent'].appendChild(child) + 
+                     (arr[0]['children'] -= 1))
+                  || this.parent.appendChild(child);
+        myChildN && arr.push({parent: child, children: myChildN})
+        arr[0]?.['children'] < 1 && arr.shift()
    }
 }
 
