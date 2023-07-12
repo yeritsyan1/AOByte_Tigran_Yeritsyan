@@ -5,6 +5,7 @@ const rotate = document.createElement("button");
 const parent = document.createElement("div");
 
 input.placeholder = "Length (N)";
+input.type = "number";
 addButton.textContent = "Create";
 
 document.body.appendChild(input);
@@ -25,40 +26,47 @@ function createTriangle() {
   drawTriangle(length);
   rotate.textContent = "Rotate";
   document.body.appendChild(rotate);
-  rotate.addEventListener("click", () => {
-    drawTriangle(length);
-  });
 }
 
+rotate.addEventListener("click", () => {
+  drawTriangle(input.value);
+});
+
 function drawTriangle(length) {
-  if (!isRotated) {
+  if (length > 2 && length <= 25) {
+    if (!isRotated) {
+      isRotated = !isRotated;
+      removeChildren();
+
+      for (let i = length; i > 0; i--) {
+        const row = document.createElement("div");
+        row.style.width = "30%";
+        row.style.height = "7px";
+        row.style.textAlign = "center";
+        row.textContent = "*".repeat(i);
+        parent.appendChild(row);
+      }
+    } else {
+      return rotateTriangle(length);
+    }
+  } else {
+    alert("This number is incorrect. You need to write a number from 3 to 25.");
+  }
+}
+
+function rotateTriangle(length) {
+  if (length > 2 && length <= 25) {
     isRotated = !isRotated;
     removeChildren();
 
-    for (let i = length; i > 0; i--) {
-      let row = document.createElement("div");
+    for (let i = 1; i <= length; i++) {
+      const row = document.createElement("div");
       row.style.width = "30%";
       row.style.height = "7px";
       row.style.textAlign = "center";
       row.textContent = "*".repeat(i);
       parent.appendChild(row);
     }
-  } else {
-    return rotateTriangle(length);
-  }
-}
-
-function rotateTriangle(length) {
-  isRotated = !isRotated;
-  removeChildren();
-
-  for (let i = 1; i <= length; i++) {
-    let row = document.createElement("div");
-    row.style.width = "30%";
-    row.style.height = "7px";
-    row.style.textAlign = "center";
-    row.textContent = "*".repeat(i);
-    parent.appendChild(row);
   }
 }
 
